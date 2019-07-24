@@ -3,14 +3,25 @@ from django.http import HttpResponse
 
 
 # Create your views here.
+from book.models import UserInfo
+
+
 def index(request):
-    userlist = {'ljw@qq.com':"123456","liu@qq.com":'1122'}
-    email = request.POST.get("email")
-    pwd = request.POST.get('pwd')
-    if email in userlist.keys() and userlist.get(email)==pwd:
-        return HttpResponse(f"<h1>欢迎你{email}登录成功</h1>")
-    else:
-        return render(request, "book/index_form.html")
+    email = request.GET.get("email")
+    pwd = request.GET.get('pwd')
+    msg=''
+    try:
+        userInfo=UserInfo.objects.get(email=email)
+        if userInfo and userInfo.password==pwd:
+            return HttpResponse(f"<h1>欢迎您，{email}</h1>")
+        else:
+            msg="用户名或密码错误"
+    except:
+        msg="用户名不存在"
+    kwgs={
+        "msg":msg,
+    }
+    return render(request, "book/index_form.html",kwgs)
 
 
 def index_form(request):

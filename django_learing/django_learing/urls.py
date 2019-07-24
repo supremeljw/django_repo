@@ -19,6 +19,6 @@ from book import views
 
 urlpatterns = [
     url(r'^admin/$', admin.site.urls),
-    url(r'^index_form/$', views.index_form),
+    # url(r'^index_form/$', views.index_form),
     url(r'', views.index),
 ]
