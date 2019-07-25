@@ -116,6 +116,5 @@ dmypy.json
 
 # 忽略某些文件（夹）
 .idea/
-venv/
 
 
