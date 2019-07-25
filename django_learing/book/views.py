@@ -7,17 +7,20 @@ from book.models import UserInfo
 
 
 def index(request):
-    email = request.GET.get("email")
-    pwd = request.GET.get('pwd')
+    kwgs={}
     msg=''
-    try:
-        userInfo=UserInfo.objects.get(email=email)
-        if userInfo and userInfo.password==pwd:
-            return HttpResponse(f"<h1>欢迎您，{email}</h1>")
-        else:
-            msg="用户名或密码错误"
-    except:
-        msg="用户名不存在"
+    if request.method=='POST':
+        email = request.POST.get("email")
+        pwd = request.POST.get('pwd')
+
+        try:
+            userInfo=UserInfo.objects.get(email=email)
+            if userInfo and userInfo.password==pwd:
+                return HttpResponse(f"<h1>欢迎您，{email}</h1>")
+            else:
+                msg="用户名或密码错误"
+        except:
+            msg="用户名不存在"
     kwgs={
         "msg":msg,
     }

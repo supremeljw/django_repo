@@ -16,8 +16,9 @@
 	<body>
 		<h1>表单提交</h1>
         <h1>{{ msg }}</h1>
-		<div class="col-md-6">
-			<form method="get">
+		<div class="col-md-4">
+			<form method="POST">
+                 {% csrf_token %} 
 				<div class="form-group">
 					<label for="exampleInputEmail1">Email address</label>
 					<input name="email" type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
