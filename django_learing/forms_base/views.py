@@ -1,9 +1,8 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse,redirect,reverse
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
 from .forms import  RegisterForm, LoginForm
 from .models import UserInfo
-
 
 def register(request):
     # 没有绑定数据的表单
@@ -19,6 +18,7 @@ def register(request):
             username = reg_form.cleaned_data["username"]
             password = reg_form.cleaned_data["password"]
             print("合法")
+            password=make_password(password)
             UserInfo.objects.create(username=username,password=password)
         else:
             print("不合法")
@@ -27,13 +27,26 @@ def register(request):
 
 def login(request):
     login_form = LoginForm()
+    msg=''
     if request.method == "POST":
         login_form = LoginForm(request.POST)
         # is_valid提交的数据合法(会检查所有字段及表单整体的合法性)
         if login_form.is_valid():
             password = login_form.cleaned_data["password"]
             user = UserInfo.objects.get(username=login_form.cleaned_data["username"])
-    return render(request, 'forms_base/login.html', {"form": login_form})
+            if check_password(password,user.password):
+                print('用户名密码验证成功')
+                request.session['user']=user.username
+                return redirect(reverse('forms_base:index'))
+            else:
+                messages.add_message(request,messages.INFO,'用户名密码验证失败')
+                print('用户名密码验证失败')
+    kwgs={
+        'form':login_form,
+        'msg':msg
+    }
+
+    return render(request, 'forms_base/login.html', kwgs)
 
 
 def logout(request):
@@ -42,4 +55,4 @@ def logout(request):
 
 
 def index(req):
-    return HttpResponse('index')
+    return render(req,'forms_base/index.html')

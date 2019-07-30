@@ -5,12 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<h1>欢迎你！{{ request.session.user }}</h1>
-{% if messages %}
-    {% for item in messages %}
-        {{ item }}-----
-    {% endfor %}
-{% endif %}
+<h1>欢迎你！</h1>
 <ul>
     <li><a href="{% url 'forms_base:register' %}">注册</a></li>
     <li><a href="{% url 'forms_base:login' %}">登录</a></li>
@@ -20,7 +15,8 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="登录">
+{#    {{ form.username }}#}
+    <input type="submit" value="注册">
 </form>
 </body>
 </html>
