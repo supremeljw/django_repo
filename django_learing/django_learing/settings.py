@@ -23,8 +23,7 @@ SECRET_KEY = '652o@=@2vm$bi808vw3mxf_33^76so6#*9%3x791p5e+&520va'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -36,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'book',"forms_base","forms_auth",
+    "django_views","model_define",
 ]
 
 MIDDLEWARE = [
@@ -117,3 +117,69 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+
+# STATIC_ROOT 用来收集所有app的静态文件，放到这个目录下
+STATIC_ROOT = os.path.join(BASE_DIR, "static_collect")
+
+# mysite/settings.py
+# 定义并创建目录
+LOG_PATH = os.path.join(BASE_DIR, 'log')
+if not os.path.exists(LOG_PATH):
+    os.mkdir(LOG_PATH)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    # formatters：配置日志格式
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d] [%(module)s:%(funcName)s] [%(levelname)s]- %(message)s'
+        },
+        # 对日志信息进行格式化，每个字段对应了日志格式中的一个字段，更多字段参考官网文档
+        'myformat': {
+            'format': '%(asctime)s %(pathname)s -  %(message)s'
+        }
+    },
+    # handlers： 配置日志记录到哪里
+    'handlers': {
+        'default': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            # 'filename': LOG_PATH+'/all.log',     # 日志输出文件
+            'filename': os.path.join(LOG_PATH, 'all.log'),  # 日志输出文件
+            'maxBytes': 1024 * 1024 * 5,  # 文件大小
+            'backupCount': 5,  # 备份份数
+            'formatter': 'standard',  # 使用哪种formatters日志格式
+        },
+        'app1': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': LOG_PATH + '/app1.log',  # 日志输出文件
+            'maxBytes': 1024 * 1024 * 5,  # 文件大小
+            'backupCount': 5,  # 备份份数
+            'formatter': 'myformat',  # 使用哪种formatters日志格式
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+    },
+    # loggers: 定义记录器，供程序调用
+    'loggers': {
+        # 名为django的logger会自动记录，其他需要自己调用
+        'django': {
+            'handlers': ['default', 'console'],
+            'level': 'DEBUG',
+            'propagate': True
+        }
+    }
+}
+
+
+
+# 配置媒体文件路径
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_URL = '/media/'
+
