@@ -8,7 +8,7 @@ import re
 from . import settings
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'',include('model_define.urls',namespace="django_views")),
+    url(r'',include('model_query.urls',namespace="model_query")),
     # 自己添加规则来处理静态文件
     # url(r'^%s(?P<path>.*)$' % re.escape(settings.STATIC_URL.lstrip('/')), serve,{"document_root": settings.STATIC_ROOT}),
     url(r'^%s(?P<path>.*)$' % re.escape(settings.MEDIA_URL.lstrip('/')), serve,{"document_root": settings.MEDIA_ROOT}),

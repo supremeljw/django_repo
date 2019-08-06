@@ -1,0 +1,1 @@
+[{"model": "model_query.book", "pk": 1, "fields": {"name": "ljw", "pages": 200, "price": "100.00", "rating": 2.0, "publisher": 1, "pubdate": "2019-08-09", "authors": [5]}}, {"model": "model_query.book", "pk": 2, "fields": {"name": "python", "pages": 100, "price": "200.00", "rating": 1.0, "publisher": 1, "pubdate": "2019-08-06", "authors": [2]}}]

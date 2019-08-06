@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'book',"forms_base","forms_auth",
     "django_views","model_define",
+    'model_query',
 ]
 
 MIDDLEWARE = [
